@@ -11,10 +11,13 @@ namespace SolutionFavorites.MEF
     /// </summary>
     internal sealed class FavoritesDragDropController : IDragDropSourceController
     {
+        private static FavoritesDragDropController _instance;
+
         /// <summary>
         /// Gets the singleton instance.
         /// </summary>
-        public static FavoritesDragDropController Instance => field ??= new FavoritesDragDropController();
+        public static FavoritesDragDropController Instance =>
+            _instance ??= new FavoritesDragDropController();
 
         private FavoritesDragDropController() { }
 
