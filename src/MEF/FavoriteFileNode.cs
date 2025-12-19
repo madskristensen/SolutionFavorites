@@ -18,6 +18,7 @@ namespace SolutionFavorites.MEF
         FavoriteNodeBase,
         ITreeDisplayItemWithImages,
         IPrioritizedComparable,
+        IContextMenuPattern,
         IInvocationPattern,
         IDragDropSourcePattern
     {

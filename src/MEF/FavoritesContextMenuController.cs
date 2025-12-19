@@ -17,8 +17,8 @@ namespace SolutionFavorites.MEF
         /// <summary>
         /// Singleton instance.
         /// </summary>
-        public static FavoritesContextMenuController Instance => 
-            _instance ?? (_instance = new FavoritesContextMenuController());
+        public static FavoritesContextMenuController Instance =>
+            _instance ??= new FavoritesContextMenuController();
 
         /// <summary>
         /// Gets the currently selected item for command handlers.

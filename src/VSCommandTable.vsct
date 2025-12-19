@@ -37,6 +37,11 @@
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
       </Group>
       
+      <!-- Group for toggle button on Solution Explorer toolbar -->
+      <Group guid="SolutionFavorites" id="SolutionExplorerToolbarGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_TOOL_PROJWIN"/>
+      </Group>
+      
       <!-- File context menu groups -->
       <Group guid="SolutionFavorites" id="FileEditGroup" priority="0x0100">
         <Parent guid="SolutionFavorites" id="FavoritesFileContextMenu"/>
@@ -68,7 +73,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Add to Favorites</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.AddToFavorites</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.AddToFavorites</CanonicalName>
         </Strings>
       </Button>
       
@@ -79,7 +84,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Remove from Favorites</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.RemoveFromFavorites</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.RemoveFromFavorites</CanonicalName>
         </Strings>
       </Button>
       
@@ -90,7 +95,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Open Containing Folder</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.OpenContainingFolder</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.OpenContainingFolder</CanonicalName>
         </Strings>
       </Button>
       
@@ -101,7 +106,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Copy Full Path</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.CopyFullPath</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.CopyFullPath</CanonicalName>
         </Strings>
       </Button>
       
@@ -112,7 +117,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>New Folder</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.NewFolder</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.NewFolder</CanonicalName>
         </Strings>
       </Button>
       
@@ -123,7 +128,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>New Folder</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.NewFolderInFolder</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.NewFolderInFolder</CanonicalName>
         </Strings>
       </Button>
       
@@ -134,7 +139,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Rename</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.RenameFolder</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.RenameFolder</CanonicalName>
         </Strings>
       </Button>
       
@@ -145,11 +150,30 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Remove</ButtonText>
-          <LocCanonicalName>.SolutionFavorites.RemoveFolder</LocCanonicalName>
+          <CanonicalName>.SolutionFavorites.RemoveFolder</CanonicalName>
+        </Strings>
+      </Button>
+      
+      <!-- Toggle Favorites Visibility - appears on Solution Explorer toolbar -->
+      <Button guid="SolutionFavorites" id="ToggleFavoritesVisibility" priority="0x0100" type="Button">
+        <Parent guid="SolutionFavorites" id="SolutionExplorerToolbarGroup" />
+        <Icon guid="ImageCatalogGuid" id="Favorite" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Toggle Favorites</ButtonText>
+          <ToolTipText>Show or hide the Favorites node</ToolTipText>
+          <CanonicalName>.SolutionFavorites.ToggleFavorites</CanonicalName>
         </Strings>
       </Button>
     </Buttons>
   </Commands>
+
+  <VisibilityConstraints>
+    <VisibilityItem guid="SolutionFavorites" id="ToggleFavoritesVisibility" context="UICONTEXT_SolutionHasSingleProject" />
+    <VisibilityItem guid="SolutionFavorites" id="ToggleFavoritesVisibility" context="UICONTEXT_SolutionHasMultipleProjects" />
+  </VisibilityConstraints>
   
   <Symbols>
     <GuidSymbol name="SolutionFavorites" value="{7a4b358f-2116-47f8-bbe5-130edf57af2a}">
@@ -160,6 +184,7 @@
       
       <!-- Groups -->
       <IDSymbol name="AddToFavoritesGroup" value="0x0010" />
+      <IDSymbol name="SolutionExplorerToolbarGroup" value="0x0020" />
       <IDSymbol name="FileEditGroup" value="0x0060" />
       <IDSymbol name="FileActionsGroup" value="0x0070" />
       <IDSymbol name="FolderNewGroup" value="0x0080" />
@@ -175,6 +200,7 @@
       <IDSymbol name="NewFolderInFolder" value="0x0111" />
       <IDSymbol name="RenameFolder" value="0x0112" />
       <IDSymbol name="RemoveFolder" value="0x0113" />
+      <IDSymbol name="ToggleFavoritesVisibility" value="0x0120" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

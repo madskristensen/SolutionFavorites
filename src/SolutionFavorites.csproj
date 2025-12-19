@@ -53,6 +53,7 @@
     <Compile Include="Commands\RemoveFolderCommand.cs" />
     <Compile Include="Commands\RemoveFromFavoritesCommand.cs" />
     <Compile Include="Commands\RenameFolderCommand.cs" />
+    <Compile Include="Commands\ToggleFavoritesVisibilityCommand.cs" />
     <Compile Include="FavoritesManager.cs" />
     <Compile Include="MEF\FavoriteFileNode.cs" />
     <Compile Include="MEF\FavoriteFolderNode.cs" />

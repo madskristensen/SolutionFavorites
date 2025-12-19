@@ -26,6 +26,7 @@ namespace SolutionFavorites
         public const int FavoritesFolderContextMenu = 0x0004;
         public const int FavoritesRootContextMenu = 0x0005;
         public const int AddToFavoritesGroup = 0x0010;
+        public const int SolutionExplorerToolbarGroup = 0x0020;
         public const int FileEditGroup = 0x0060;
         public const int FileActionsGroup = 0x0070;
         public const int FolderNewGroup = 0x0080;
@@ -39,5 +40,6 @@ namespace SolutionFavorites
         public const int NewFolderInFolder = 0x0111;
         public const int RenameFolder = 0x0112;
         public const int RemoveFolder = 0x0113;
+        public const int ToggleFavoritesVisibility = 0x0120;
     }
 }

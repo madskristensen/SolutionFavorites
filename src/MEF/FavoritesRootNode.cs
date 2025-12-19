@@ -17,6 +17,7 @@ namespace SolutionFavorites.MEF
         IAttachedCollectionSource,
         ITreeDisplayItemWithImages,
         IPrioritizedComparable,
+        IContextMenuPattern,
         IDragDropTargetPattern
     {
         private readonly ObservableCollection<object> _children;

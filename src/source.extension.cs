@@ -12,7 +12,7 @@ namespace SolutionFavorites
         public const string Name = "Solution Favorites";
         public const string Description = @"Pin your frequently used files to a Favorites node in Solution Explorer for quick access.";
         public const string Language = "en-US";
-        public const string Version = "1.0.900";
+        public const string Version = "1.0.901";
         public const string Author = "Mads Kristensen";
         public const string Tags = "favorites, pin, solution explorer, productivity";
         public const bool IsPreview = false;

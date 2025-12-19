@@ -441,9 +441,36 @@ namespace SolutionFavorites
         /// </summary>
         public bool HasFavorites => _data.Items.Any();
 
+        /// <summary>
+        /// Gets or sets whether the Favorites node is visible in Solution Explorer.
+        /// </summary>
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
+                    RaiseVisibilityChanged();
+                }
+            }
+        }
+        private bool _isVisible = true;
+
+        /// <summary>
+        /// Event raised when visibility changes.
+        /// </summary>
+        public event EventHandler VisibilityChanged;
+
         private void RaiseFavoritesChanged()
         {
             FavoritesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RaiseVisibilityChanged()
+        {
+            VisibilityChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

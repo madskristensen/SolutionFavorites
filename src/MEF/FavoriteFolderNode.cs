@@ -18,6 +18,7 @@ namespace SolutionFavorites.MEF
         IAttachedCollectionSource,
         ITreeDisplayItemWithImages,
         IPrioritizedComparable,
+        IContextMenuPattern,
         IInvocationPattern,
         IDragDropSourcePattern,
         IDragDropTargetPattern
