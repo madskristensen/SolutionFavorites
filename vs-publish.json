@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": [ "other", "team development" ],
+  "private": false,
+  "identity": {
+    "internalName": "WorkflowBrowser",
+    "tags": [ "files", "folders", "workspace", "repo" ]
+  },
+  "assetFiles": [
+    {
+      "pathOnDisk": "art/animation.gif",
+      "targetPath": "art/animation.gif"
+    },
+    {
+      "pathOnDisk": "art/add-physical-folder.png",
+      "targetPath": "art/add-physical-folder.png"
+    }
+  ],
+  "overview": "README.md",
+  "publisher": "MadsKristensen",
+  "repo": "https://github.com/madskristensen/WorkspaceFiles"
+}

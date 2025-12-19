@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  <Include href="KnownImageIds.vsct"/>
+  <Include href="VSGlobals.vsct"/>
+
+  <Commands package="SolutionFavorites">
+    
+    <!-- Context Menus -->
+    <Menus>
+      <!-- File context menu -->
+      <Menu guid="SolutionFavorites" id="FavoritesFileContextMenu" type="Context">
+        <Strings>
+          <ButtonText>Favorites File Context Menu</ButtonText>
+        </Strings>
+      </Menu>
+    </Menus>
+    
+    <Groups>
+      <!-- Group for "Add to Favorites" in Solution Explorer file context menu -->
+      <!-- Placed after the View Code group (IDG_VS_CTXT_ITEM_VIEWCODE) -->
+      <Group guid="SolutionFavorites" id="AddToFavoritesGroup" priority="0x0200">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+      
+      <!-- File context menu groups -->
+      <Group guid="SolutionFavorites" id="FileEditGroup" priority="0x0100">
+        <Parent guid="SolutionFavorites" id="FavoritesFileContextMenu"/>
+      </Group>
+      <Group guid="SolutionFavorites" id="FileActionsGroup" priority="0x0200">
+        <Parent guid="SolutionFavorites" id="FavoritesFileContextMenu"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <!-- Add to Favorites - appears in Solution Explorer file context menu -->
+      <Button guid="SolutionFavorites" id="AddToFavorites" priority="0x0100" type="Button">
+        <Parent guid="SolutionFavorites" id="AddToFavoritesGroup" />
+        <Icon guid="ImageCatalogGuid" id="AddFavorite" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Add to Favorites</ButtonText>
+          <LocCanonicalName>.SolutionFavorites.AddToFavorites</LocCanonicalName>
+        </Strings>
+      </Button>
+      
+      <!-- Remove from Favorites -->
+      <Button guid="SolutionFavorites" id="RemoveFromFavorites" priority="0x0100" type="Button">
+        <Parent guid="SolutionFavorites" id="FileEditGroup" />
+        <Icon guid="ImageCatalogGuid" id="RemoveFromCollection" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Remove from Favorites</ButtonText>
+          <LocCanonicalName>.SolutionFavorites.RemoveFromFavorites</LocCanonicalName>
+        </Strings>
+      </Button>
+      
+      <!-- Open Containing Folder -->
+      <Button guid="SolutionFavorites" id="OpenContainingFolder" priority="0x0100" type="Button">
+        <Parent guid="SolutionFavorites" id="FileActionsGroup" />
+        <Icon guid="ImageCatalogGuid" id="OpenFolder" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Open Containing Folder</ButtonText>
+          <LocCanonicalName>.SolutionFavorites.OpenContainingFolder</LocCanonicalName>
+        </Strings>
+      </Button>
+      
+      <!-- Copy Full Path -->
+      <Button guid="SolutionFavorites" id="CopyFullPath" priority="0x0200" type="Button">
+        <Parent guid="SolutionFavorites" id="FileActionsGroup" />
+        <Icon guid="ImageCatalogGuid" id="Copy" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Copy Full Path</ButtonText>
+          <LocCanonicalName>.SolutionFavorites.CopyFullPath</LocCanonicalName>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+  
+  <Symbols>
+    <GuidSymbol name="SolutionFavorites" value="{7a4b358f-2116-47f8-bbe5-130edf57af2a}">
+      <!-- Menus -->
+      <IDSymbol name="FavoritesFileContextMenu" value="0x0003" />
+      
+      <!-- Groups -->
+      <IDSymbol name="AddToFavoritesGroup" value="0x0010" />
+      <IDSymbol name="FileEditGroup" value="0x0060" />
+      <IDSymbol name="FileActionsGroup" value="0x0070" />
+      
+      <!-- Commands -->
+      <IDSymbol name="AddToFavorites" value="0x0100" />
+      <IDSymbol name="RemoveFromFavorites" value="0x0101" />
+      <IDSymbol name="OpenContainingFolder" value="0x0105" />
+      <IDSymbol name="CopyFullPath" value="0x0106" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
