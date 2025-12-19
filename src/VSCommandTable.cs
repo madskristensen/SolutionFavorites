@@ -41,5 +41,7 @@ namespace SolutionFavorites
         public const int RenameFolder = 0x0112;
         public const int RemoveFolder = 0x0113;
         public const int ToggleFavoritesVisibility = 0x0120;
+        public const int AddFile = 0x0114;
+        public const int AddFileInFolder = 0x0115;
     }
 }

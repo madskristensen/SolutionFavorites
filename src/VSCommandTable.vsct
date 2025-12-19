@@ -124,6 +124,17 @@
         </Strings>
       </Button>
       
+      <!-- Add File - appears in root context menu -->
+      <Button guid="SolutionFavorites" id="AddFile" priority="0x0200" type="Button">
+        <Parent guid="SolutionFavorites" id="RootNewGroup" />
+        <Icon guid="ImageCatalogGuid" id="AddDocument" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Add File...</ButtonText>
+          <CanonicalName>.SolutionFavorites.AddFile</CanonicalName>
+        </Strings>
+      </Button>
+      
       <!-- New Folder in folder context menu -->
       <Button guid="SolutionFavorites" id="NewFolderInFolder" priority="0x0100" type="Button">
         <Parent guid="SolutionFavorites" id="FolderNewGroup" />
@@ -132,6 +143,17 @@
         <Strings>
           <ButtonText>New Folder</ButtonText>
           <CanonicalName>.SolutionFavorites.NewFolderInFolder</CanonicalName>
+        </Strings>
+      </Button>
+      
+      <!-- Add File in folder context menu -->
+      <Button guid="SolutionFavorites" id="AddFileInFolder" priority="0x0200" type="Button">
+        <Parent guid="SolutionFavorites" id="FolderNewGroup" />
+        <Icon guid="ImageCatalogGuid" id="AddDocument" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Add File...</ButtonText>
+          <CanonicalName>.SolutionFavorites.AddFileInFolder</CanonicalName>
         </Strings>
       </Button>
       
@@ -204,6 +226,8 @@
       <IDSymbol name="RenameFolder" value="0x0112" />
       <IDSymbol name="RemoveFolder" value="0x0113" />
       <IDSymbol name="ToggleFavoritesVisibility" value="0x0120" />
+      <IDSymbol name="AddFile" value="0x0114" />
+      <IDSymbol name="AddFileInFolder" value="0x0115" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>
