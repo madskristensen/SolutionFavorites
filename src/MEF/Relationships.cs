@@ -1,6 +1,6 @@
 using Microsoft.Internal.VisualStudio.PlatformUI;
 
-namespace SolutionFavorites
+namespace SolutionFavorites.MEF
 {
     /// <summary>
     /// Defines relationships for the attached collection source provider.

@@ -3,10 +3,10 @@ using SolutionFavorites.MEF;
 namespace SolutionFavorites.Commands
 {
     /// <summary>
-    /// Command to create a new folder inside an existing folder.
+    /// Command to create a new subfolder inside an existing folder.
     /// </summary>
     [Command(PackageIds.NewFolderInFolder)]
-    internal sealed class NewFolderInFolderCommand : BaseCommand<NewFolderInFolderCommand>
+    internal sealed class CreateSubfolderCommand : BaseCommand<CreateSubfolderCommand>
     {
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {

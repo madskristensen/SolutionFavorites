@@ -12,13 +12,11 @@ namespace SolutionFavorites.MEF
     /// </summary>
     internal sealed class FavoritesContextMenuController : IContextMenuController
     {
-        private static FavoritesContextMenuController _instance;
-
         /// <summary>
         /// Singleton instance.
         /// </summary>
         public static FavoritesContextMenuController Instance =>
-            _instance ??= new FavoritesContextMenuController();
+            field ??= new FavoritesContextMenuController();
 
         /// <summary>
         /// Gets the currently selected item for command handlers.
@@ -35,20 +33,24 @@ namespace SolutionFavorites.MEF
             CurrentItem = itemList.FirstOrDefault();
 
             if (CurrentItem == null)
+            {
                 return false;
+            }
 
-            var shell = VS.GetRequiredService<SVsUIShell, IVsUIShell>();
-            var guid = PackageGuids.SolutionFavorites;
+            IVsUIShell shell = VS.GetRequiredService<SVsUIShell, IVsUIShell>();
+            Guid guid = PackageGuids.SolutionFavorites;
 
             var menuId = GetMenuId(CurrentItem);
             if (menuId == 0)
+            {
                 return false;
+            }
 
             var result = shell.ShowContextMenu(
                 dwCompRole: 0,
                 rclsidActive: ref guid,
                 nMenuId: menuId,
-                pos: new[] { new POINTS { x = (short)location.X, y = (short)location.Y } },
+                pos: [new POINTS { x = (short)location.X, y = (short)location.Y }],
                 pCmdTrgtActive: null);
 
             return ErrorHandler.Succeeded(result);
@@ -56,17 +58,13 @@ namespace SolutionFavorites.MEF
 
         private static int GetMenuId(object item)
         {
-            switch (item)
+            return item switch
             {
-                case FavoriteFileNode _:
-                    return PackageIds.FavoritesFileContextMenu;
-                case FavoriteFolderNode _:
-                    return PackageIds.FavoritesFolderContextMenu;
-                case FavoritesRootNode _:
-                    return PackageIds.FavoritesRootContextMenu;
-                default:
-                    return 0;
-            }
+                FavoriteFileNode _ => PackageIds.FavoritesFileContextMenu,
+                FavoriteFolderNode _ => PackageIds.FavoritesFolderContextMenu,
+                FavoritesRootNode _ => PackageIds.FavoritesRootContextMenu,
+                _ => 0,
+            };
         }
     }
 }

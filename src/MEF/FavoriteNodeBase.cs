@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using SolutionFavorites.Models;
@@ -22,19 +20,18 @@ namespace SolutionFavorites.MEF
         INotifyPropertyChanged,
         IDisposable
     {
-        private bool _disposed;
 
         /// <summary>
         /// The set of pattern types this node supports.
         /// Derived classes should override to add additional patterns.
         /// </summary>
-        protected virtual HashSet<Type> SupportedPatterns { get; } = new HashSet<Type>
-        {
+        protected virtual HashSet<Type> SupportedPatterns { get; } =
+        [
             typeof(ITreeDisplayItem),
             typeof(IBrowsablePattern),
             typeof(IContextMenuPattern),
             typeof(ISupportDisposalNotification),
-        };
+        ];
 
         /// <summary>
         /// Parent node in the tree.
@@ -64,21 +61,16 @@ namespace SolutionFavorites.MEF
         // IInteractionPatternProvider
         public virtual TPattern GetPattern<TPattern>() where TPattern : class
         {
-            if (!_disposed && SupportedPatterns.Contains(typeof(TPattern)))
+            if (!IsDisposed && SupportedPatterns.Contains(typeof(TPattern)))
             {
                 return this as TPattern;
             }
 
-            if (typeof(TPattern) == typeof(ISupportDisposalNotification))
-            {
-                return this as TPattern;
-            }
-
-            return null;
+            return typeof(TPattern) == typeof(ISupportDisposalNotification) ? this as TPattern : null;
         }
 
         // ISupportDisposalNotification
-        public bool IsDisposed => _disposed;
+        public bool IsDisposed { get; private set; }
 
         // INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -95,9 +87,9 @@ namespace SolutionFavorites.MEF
 
         public void Dispose()
         {
-            if (!_disposed)
+            if (!IsDisposed)
             {
-                _disposed = true;
+                IsDisposed = true;
                 OnDisposing();
                 RaisePropertyChanged(nameof(IsDisposed));
             }
@@ -111,18 +103,13 @@ namespace SolutionFavorites.MEF
         private static bool CanAcceptDrop(DragEventArgs e)
         {
             // Accept our internal favorites format (for reordering)
-            if (e.Data.GetDataPresent(FavoritesDragDropConstants.FavoritesDataFormat))
+            if (e.Data.GetDataPresent(DragDropFormats.Favorites))
             {
                 return true;
             }
 
             // Accept file drops from Solution Explorer or Windows Explorer
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                return true;
-            }
-
-            return false;
+            return e.Data.GetDataPresent(DataFormats.FileDrop);
         }
 
         /// <summary>
@@ -132,7 +119,7 @@ namespace SolutionFavorites.MEF
         {
             if (CanAcceptDrop(e))
             {
-                e.Effects = e.Data.GetDataPresent(FavoritesDragDropConstants.FavoritesDataFormat)
+                e.Effects = e.Data.GetDataPresent(DragDropFormats.Favorites)
                     ? DragDropEffects.Move
                     : DragDropEffects.Copy;
             }
@@ -145,7 +132,7 @@ namespace SolutionFavorites.MEF
         {
             if (CanAcceptDrop(e))
             {
-                e.Effects = e.Data.GetDataPresent(FavoritesDragDropConstants.FavoritesDataFormat)
+                e.Effects = e.Data.GetDataPresent(DragDropFormats.Favorites)
                     ? DragDropEffects.Move
                     : DragDropEffects.Copy;
             }
@@ -169,7 +156,7 @@ namespace SolutionFavorites.MEF
             ThreadHelper.ThrowIfNotOnUIThread();
 
             // Handle internal favorites reordering
-            if (e.Data.GetDataPresent(FavoritesDragDropConstants.FavoritesDataFormat))
+            if (e.Data.GetDataPresent(DragDropFormats.Favorites))
             {
                 HandleFavoritesDrop(targetFolder, e);
                 return;
@@ -190,9 +177,10 @@ namespace SolutionFavorites.MEF
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var nodes = e.Data.GetData(FavoritesDragDropConstants.FavoritesDataFormat) as object[];
-            if (nodes == null)
+            if (e.Data.GetData(DragDropFormats.Favorites) is not object[] nodes)
+            {
                 return;
+            }
 
             foreach (var node in nodes)
             {
@@ -206,7 +194,10 @@ namespace SolutionFavorites.MEF
                 {
                     // Don't allow dropping a folder onto itself
                     if (targetFolder != null && folderNode.Item == targetFolder)
+                    {
                         continue;
+                    }
+
                     itemToMove = folderNode.Item;
                 }
 
@@ -226,9 +217,10 @@ namespace SolutionFavorites.MEF
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
-            if (files == null || files.Length == 0)
+            if (e.Data.GetData(DataFormats.FileDrop) is not string[] files || files.Length == 0)
+            {
                 return;
+            }
 
             foreach (var filePath in files)
             {
@@ -237,11 +229,11 @@ namespace SolutionFavorites.MEF
                 {
                     if (targetFolder != null)
                     {
-                        FavoritesManager.Instance.AddFileToFolder(filePath, targetFolder);
+                        _ = FavoritesManager.Instance.AddFileToFolder(filePath, targetFolder);
                     }
                     else
                     {
-                        FavoritesManager.Instance.AddFile(filePath);
+                        _ = FavoritesManager.Instance.AddFile(filePath);
                     }
                 }
             }
@@ -296,7 +288,7 @@ namespace SolutionFavorites.MEF
             {
                 var child = children[i];
                 FavoriteItem childItem = null;
-                
+
                 if (child is FavoriteFileNode fileNode)
                 {
                     childItem = fileNode.Item;
@@ -317,14 +309,14 @@ namespace SolutionFavorites.MEF
             // Add missing items and reorder existing ones
             for (var i = 0; i < currentItems.Count; i++)
             {
-                var item = currentItems[i];
-                
+                FavoriteItem item = currentItems[i];
+
                 // Check if we already have a node for this item
                 if (existingNodes.TryGetValue(item, out var existingNode))
                 {
                     // Find where this node currently is in the collection
                     var currentIndex = children.IndexOf(existingNode);
-                    
+
                     if (currentIndex == -1)
                     {
                         // Node was removed (shouldn't happen, but handle it)
@@ -352,7 +344,7 @@ namespace SolutionFavorites.MEF
         protected static object CreateNodeForItem(FavoriteItem item, object parent)
         {
             return item.IsFolder
-                ? (object)new FavoriteFolderNode(item, parent)
+                ? new FavoriteFolderNode(item, parent)
                 : new FavoriteFileNode(item, parent);
         }
 

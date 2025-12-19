@@ -1,12 +1,10 @@
-using SolutionFavorites.MEF;
-
 namespace SolutionFavorites.Commands
 {
     /// <summary>
     /// Command to create a new folder in the Favorites root.
     /// </summary>
     [Command(PackageIds.NewFolder)]
-    internal sealed class NewFolderCommand : BaseCommand<NewFolderCommand>
+    internal sealed class CreateFolderCommand : BaseCommand<CreateFolderCommand>
     {
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {

@@ -19,7 +19,7 @@ This extension adds a **Favorites** node to Solution Explorer where you can orga
 
 ## Quick Start
 
-1. Right-click any file in Solution Explorer → **Add to Favorites**
+1. Right-click any file or folder in Solution Explorer → **Add to Favorites**
 2. Find your pinned files in the **Favorites** node at the top
 
 ![Add to Favorites](art/add-to-favorites.png)
@@ -29,11 +29,19 @@ This extension adds a **Favorites** node to Solution Explorer where you can orga
 | Feature | Description |
 |---------|-------------|
 | **Pin Files** | Double-click to instantly open your most-used files |
+| **Pin Folders** | Add entire folders with their contents to Favorites |
+| **Add External Files** | Browse and add files from anywhere on disk |
 | **Virtual Folders** | Organize favorites into custom folder hierarchies |
 | **Drag & Drop** | Drag files from Solution Explorer onto Favorites, or rearrange within |
 | **Team Sharing** | `favorites.json` lives in your solution folder—commit it to share with your team |
 | **Toggle Visibility** | Hide/show Favorites from the Solution Explorer toolbar |
 | **Missing File Detection** | Visual indicators when files have been moved or deleted |
+
+### Add Files and Folders
+
+- **From Solution Explorer:** Right-click any file or folder → **Add to Favorites**
+- **From Disk:** Right-click the Favorites node or any folder → **Add File...** to browse for files anywhere on your system
+- When adding a folder, a matching folder structure is created in Favorites with all contained files
 
 ### Organize with Virtual Folders
 

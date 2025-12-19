@@ -1,13 +1,13 @@
 namespace SolutionFavorites.MEF
 {
     /// <summary>
-    /// Constants for favorites drag-drop operations.
+    /// Data format identifiers for drag-drop operations.
     /// </summary>
-    internal static class FavoritesDragDropConstants
+    internal static class DragDropFormats
     {
         /// <summary>
         /// Custom data format for favorites drag-drop.
         /// </summary>
-        public const string FavoritesDataFormat = "SolutionFavorites.Items";
+        public const string Favorites = "SolutionFavorites.Items";
     }
 }

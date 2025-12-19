@@ -1,3 +1,5 @@
+using SolutionFavorites.Helpers;
+
 namespace SolutionFavorites.Commands
 {
     /// <summary>
@@ -10,19 +12,9 @@ namespace SolutionFavorites.Commands
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            using (var dialog = new System.Windows.Forms.OpenFileDialog())
+            foreach (var filePath in FileDialogHelper.BrowseForFiles())
             {
-                dialog.Title = "Add File to Favorites";
-                dialog.Filter = "All files (*.*)|*.*";
-                dialog.Multiselect = true;
-
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    foreach (var fileName in dialog.FileNames)
-                    {
-                        FavoritesManager.Instance.AddFile(fileName);
-                    }
-                }
+                FavoritesManager.Instance.AddFile(filePath);
             }
         }
     }

@@ -1,5 +1,6 @@
 using System.IO;
 using EnvDTE;
+using SolutionFavorites.Models;
 
 namespace SolutionFavorites.Commands
 {
@@ -13,13 +14,15 @@ namespace SolutionFavorites.Commands
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var dte = await VS.GetServiceAsync<DTE, DTE>();
+            DTE dte = await VS.GetServiceAsync<DTE, DTE>();
             if (dte?.SelectedItems == null)
+            {
                 return;
+            }
 
             foreach (SelectedItem selectedItem in dte.SelectedItems)
             {
-                var projectItem = selectedItem.ProjectItem;
+                ProjectItem projectItem = selectedItem.ProjectItem;
                 if (projectItem != null)
                 {
                     AddProjectItemFolder(projectItem);
@@ -37,11 +40,15 @@ namespace SolutionFavorites.Commands
             // Get folder name and create a favorites folder with the same name
             var folderName = projectItem.Name;
             if (string.IsNullOrEmpty(folderName))
+            {
                 return;
+            }
 
-            var favoritesFolder = FavoritesManager.Instance.CreateFolder(folderName);
+            FavoriteItem favoritesFolder = FavoritesManager.Instance.CreateFolder(folderName);
             if (favoritesFolder == null)
+            {
                 return;
+            }
 
             // Add all files from the project folder
             AddFilesFromProjectItem(projectItem, favoritesFolder);
@@ -55,7 +62,9 @@ namespace SolutionFavorites.Commands
             ThreadHelper.ThrowIfNotOnUIThread();
 
             if (projectItem.ProjectItems == null)
+            {
                 return;
+            }
 
             foreach (ProjectItem childItem in projectItem.ProjectItems)
             {
@@ -75,7 +84,7 @@ namespace SolutionFavorites.Commands
                     if (Directory.Exists(filePath))
                     {
                         // It's a subfolder - create nested folder and recurse
-                        var subFolder = FavoritesManager.Instance.CreateFolderIn(childItem.Name, targetFolder);
+                        FavoriteItem subFolder = FavoritesManager.Instance.CreateFolderIn(childItem.Name, targetFolder);
                         if (subFolder != null)
                         {
                             AddFilesFromProjectItem(childItem, subFolder);
@@ -84,7 +93,7 @@ namespace SolutionFavorites.Commands
                     else if (File.Exists(filePath))
                     {
                         // It's a file - add it to the target folder
-                        FavoritesManager.Instance.AddFileToFolder(filePath, targetFolder);
+                        _ = FavoritesManager.Instance.AddFileToFolder(filePath, targetFolder);
                     }
                 }
             }

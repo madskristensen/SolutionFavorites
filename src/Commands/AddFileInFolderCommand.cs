@@ -1,3 +1,4 @@
+using SolutionFavorites.Helpers;
 using SolutionFavorites.MEF;
 
 namespace SolutionFavorites.Commands
@@ -16,19 +17,9 @@ namespace SolutionFavorites.Commands
 
             if (currentItem is FavoriteFolderNode folderNode)
             {
-                using (var dialog = new System.Windows.Forms.OpenFileDialog())
+                foreach (var filePath in FileDialogHelper.BrowseForFiles())
                 {
-                    dialog.Title = "Add File to Favorites";
-                    dialog.Filter = "All files (*.*)|*.*";
-                    dialog.Multiselect = true;
-
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        foreach (var fileName in dialog.FileNames)
-                        {
-                            FavoritesManager.Instance.AddFileToFolder(fileName, folderNode.Item);
-                        }
-                    }
+                    FavoritesManager.Instance.AddFileToFolder(filePath, folderNode.Item);
                 }
             }
         }

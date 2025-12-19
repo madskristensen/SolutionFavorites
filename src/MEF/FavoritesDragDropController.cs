@@ -11,12 +11,10 @@ namespace SolutionFavorites.MEF
     /// </summary>
     internal sealed class FavoritesDragDropController : IDragDropSourceController
     {
-        private static FavoritesDragDropController _instance;
-
         /// <summary>
         /// Gets the singleton instance.
         /// </summary>
-        public static FavoritesDragDropController Instance => _instance ?? (_instance = new FavoritesDragDropController());
+        public static FavoritesDragDropController Instance => field ??= new FavoritesDragDropController();
 
         private FavoritesDragDropController() { }
 
@@ -25,18 +23,18 @@ namespace SolutionFavorites.MEF
         /// </summary>
         public bool DoDragDrop(IEnumerable<object> items)
         {
-            var dragItems = items.Where(i => i is FavoriteFileNode || i is FavoriteFolderNode).ToList();
+            var dragItems = items.Where(i => i is FavoriteFileNode or FavoriteFolderNode).ToList();
             if (!dragItems.Any())
             {
                 return false;
             }
 
             DependencyObject dragSource = (Keyboard.FocusedElement as DependencyObject) ?? Application.Current.MainWindow;
-            
+
             // Store the actual node objects for drag-drop
-            var dataObj = new DataObject(FavoritesDragDropConstants.FavoritesDataFormat, dragItems.ToArray());
-            
-            DragDrop.DoDragDrop(dragSource, dataObj, DragDropEffects.Move);
+            var dataObj = new DataObject(DragDropFormats.Favorites, dragItems.ToArray());
+
+            _ = DragDrop.DoDragDrop(dragSource, dataObj, DragDropEffects.Move);
 
             return true;
         }
