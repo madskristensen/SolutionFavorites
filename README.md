@@ -11,7 +11,7 @@ or get the [CI build][vsixgallery].
 
 ----------------------------------------
 
-Pin your frequently used files to a **Favorites** node in Solution Explorer for quick access.
+Pin your frequently used files to a **Favorites** node in Solution Explorer for quick access. Organize them into virtual folders and rearrange with drag and drop.
 
 ![Favorites Node](art/favorites-node.png)
 
@@ -27,7 +27,27 @@ Right-click any file in Solution Explorer and select **Add to Favorites** to pin
 
 All your favorite files appear under a **Favorites** node at the top of Solution Explorer. Double-click to open any file instantly.
 
-### Context Menu Actions
+### Virtual Folders
+
+Organize your favorites into virtual folders for better organization:
+
+- Right-click the **Favorites** node and select **New Folder** to create a folder at the root level
+- Right-click any folder and select **New Folder** to create nested subfolders
+- **Rename** or **Remove** folders from the context menu
+
+### Drag and Drop
+
+Rearrange your favorites easily:
+
+- Drag files between folders
+- Drag files to the root Favorites node
+- Drag folders to reorganize the hierarchy
+
+### Toggle Visibility
+
+Use the **Toggle Favorites** button on the Solution Explorer toolbar to show or hide the Favorites node.
+
+### File Context Menu
 
 Right-click any favorite file to access additional actions:
 
@@ -37,9 +57,16 @@ Right-click any favorite file to access additional actions:
 - **Open Containing Folder** - Open the file location in Windows Explorer
 - **Copy Full Path** - Copy the file path to clipboard
 
+### Missing File Detection
+
+Files that have been moved or deleted are shown with:
+- A warning icon overlay
+- Italic text style
+- "File not found" tooltip
+
 ### Per-Solution Storage
 
-Favorites are stored per solution in the `.vs` folder, so each solution maintains its own set of favorites.
+Favorites are stored per solution in the `.vs` folder, so each solution maintains its own set of favorites. The favorites persist even when the solution is closed and reopened.
 
 ## How can I help?
 

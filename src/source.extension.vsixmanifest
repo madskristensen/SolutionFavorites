@@ -4,6 +4,8 @@
         <Identity Id="SolutionFavorites.9f81ec6e-5c91-4809-9dde-9b3166c327fd" Version="1.0.901" Language="en-US" Publisher="Mads Kristensen" />
         <DisplayName>Solution Favorites</DisplayName>
         <Description xml:space="preserve">Pin your frequently used files to a Favorites node in Solution Explorer for quick access.</Description>
+        <MoreInfo>https://github.com/madskristensen/SolutionFavorites/</MoreInfo>
+        <License>Resources\LICENSE.txt</License>
         <Icon>Resources\Icon.png</Icon>
         <PreviewImage>Resources\Icon.png</PreviewImage>
         <Tags>favorites, pin, solution explorer, productivity</Tags>

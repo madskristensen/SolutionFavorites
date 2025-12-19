@@ -14,18 +14,21 @@
       <Menu guid="SolutionFavorites" id="FavoritesFileContextMenu" type="Context">
         <Strings>
           <ButtonText>Favorites File Context Menu</ButtonText>
+          <CanonicalName>.SolutionFavorites.FavoritesFileContextMenu</CanonicalName>
         </Strings>
       </Menu>
       <!-- Folder context menu -->
       <Menu guid="SolutionFavorites" id="FavoritesFolderContextMenu" type="Context">
         <Strings>
           <ButtonText>Favorites Folder Context Menu</ButtonText>
+          <CanonicalName>.SolutionFavorites.FavoritesFolderContextMenu</CanonicalName>
         </Strings>
       </Menu>
       <!-- Root node context menu -->
       <Menu guid="SolutionFavorites" id="FavoritesRootContextMenu" type="Context">
         <Strings>
           <ButtonText>Favorites Root Context Menu</ButtonText>
+          <CanonicalName>.SolutionFavorites.FavoritesRootContextMenu</CanonicalName>
         </Strings>
       </Menu>
     </Menus>
