@@ -63,6 +63,9 @@ namespace SolutionFavorites.MEF
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 RefreshChildren();
+                
+                // Notify UI that the folder's text (name) may have changed
+                RaisePropertyChanged(nameof(Text));
             });
 #pragma warning restore VSSDK007
         }
