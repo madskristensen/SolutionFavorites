@@ -13,6 +13,9 @@ namespace SolutionFavorites
     /// </summary>
     internal sealed partial class PackageGuids
     {
+        public const string WorkspaceFilesString = "d428d0a0-b960-4617-a7fd-15743d49e72e";
+        public static Guid WorkspaceFiles = new Guid(WorkspaceFilesString);
+
         public const string SolutionFavoritesString = "7a4b358f-2116-47f8-bbe5-130edf57af2a";
         public static Guid SolutionFavorites = new Guid(SolutionFavoritesString);
     }
@@ -22,11 +25,17 @@ namespace SolutionFavorites
     /// </summary>
     internal sealed partial class PackageIds
     {
+        public const int FileContextMenu = 0x0002;
+        public const int FolderContextMenu = 0x0003;
+        public const int FileContextMenuGroup = 0x0020;
+        public const int FolderContextMenuGroup = 0x0030;
         public const int FavoritesFileContextMenu = 0x0003;
         public const int FavoritesFolderContextMenu = 0x0004;
         public const int FavoritesRootContextMenu = 0x0005;
         public const int AddToFavoritesGroup = 0x0010;
         public const int AddToFavoritesFolderGroup = 0x0011;
+        public const int AddToFavoritesWebItemGroup = 0x0012;
+        public const int AddToFavoritesWebFolderGroup = 0x0013;
         public const int SolutionExplorerToolbarGroup = 0x0020;
         public const int FileEditGroup = 0x0060;
         public const int FileActionsGroup = 0x0070;
@@ -45,5 +54,6 @@ namespace SolutionFavorites
         public const int ToggleFavoritesVisibility = 0x0120;
         public const int AddFile = 0x0114;
         public const int AddFileInFolder = 0x0115;
+        public const int AddFolderFromDisk = 0x0116;
     }
 }

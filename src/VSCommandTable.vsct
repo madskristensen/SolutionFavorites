@@ -162,6 +162,17 @@
         </Strings>
       </Button>
       
+      <!-- Add Folder from Disk - appears in root context menu -->
+      <Button guid="SolutionFavorites" id="AddFolderFromDisk" priority="0x0300" type="Button">
+        <Parent guid="SolutionFavorites" id="RootNewGroup" />
+        <Icon guid="ImageCatalogGuid" id="AddFolder" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Add Folder from Disk...</ButtonText>
+          <CanonicalName>.SolutionFavorites.AddFolderFromDisk</CanonicalName>
+        </Strings>
+      </Button>
+
       <!-- New Folder in folder context menu -->
       <Button guid="SolutionFavorites" id="NewFolderInFolder" priority="0x0100" type="Button">
         <Parent guid="SolutionFavorites" id="FolderNewGroup" />
@@ -222,8 +233,18 @@
     </Buttons>
   </Commands>
 
-  <!-- Place existing commands in web project context menus -->
+  <!-- Place existing commands in other menus -->
   <CommandPlacements>
+    <!-- Add to Favorites directly into WorkspaceFiles (File Explorer) file context menu group -->
+    <CommandPlacement guid="SolutionFavorites" id="AddToFavorites" priority="0x0050">
+      <Parent guid="WorkspaceFiles" id="FileContextMenuGroup" />
+    </CommandPlacement>
+
+    <!-- Add to Favorites directly into WorkspaceFiles (File Explorer) folder context menu group -->
+    <CommandPlacement guid="SolutionFavorites" id="AddToFavorites" priority="0x0050">
+      <Parent guid="WorkspaceFiles" id="FolderContextMenuGroup" />
+    </CommandPlacement>
+
     <!-- Add to Favorites command in Web Project file context menu -->
     <CommandPlacement guid="SolutionFavorites" id="AddToFavorites" priority="0x0100">
       <Parent guid="SolutionFavorites" id="AddToFavoritesWebItemGroup" />
@@ -241,6 +262,14 @@
   </VisibilityConstraints>
   
   <Symbols>
+    <!-- WorkspaceFiles (File Explorer) extension symbols for context menu integration -->
+    <GuidSymbol name="WorkspaceFiles" value="{d428d0a0-b960-4617-a7fd-15743d49e72e}">
+      <IDSymbol name="FileContextMenu" value="0x0002" />
+      <IDSymbol name="FolderContextMenu" value="0x0003" />
+      <IDSymbol name="FileContextMenuGroup" value="0x020" />
+      <IDSymbol name="FolderContextMenuGroup" value="0x030" />
+    </GuidSymbol>
+
     <GuidSymbol name="SolutionFavorites" value="{7a4b358f-2116-47f8-bbe5-130edf57af2a}">
       <!-- Menus -->
       <IDSymbol name="FavoritesFileContextMenu" value="0x0003" />
@@ -272,6 +301,7 @@
       <IDSymbol name="ToggleFavoritesVisibility" value="0x0120" />
       <IDSymbol name="AddFile" value="0x0114" />
       <IDSymbol name="AddFileInFolder" value="0x0115" />
+      <IDSymbol name="AddFolderFromDisk" value="0x0116" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

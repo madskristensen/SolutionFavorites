@@ -31,6 +31,8 @@ This extension adds a **Favorites** node to Solution Explorer where you can orga
 | **Pin Files** | Double-click to instantly open your most-used files |
 | **Pin Folders** | Add entire folders with their contents to Favorites |
 | **Add External Files** | Browse and add files from anywhere on disk |
+| **Add Folder from Disk** | Browse and add any disk folder, recursively adding all its contents |
+| **File Explorer Integration** | Right-click files and folders in the [File Explorer](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.WorkspaceFiles) extension to add them to Favorites |
 | **Virtual Folders** | Organize favorites into custom folder hierarchies |
 | **Drag & Drop** | Drag files from Solution Explorer onto Favorites, or rearrange within |
 | **Team Sharing** | `favorites.json` lives in your solution folder—commit it to share with your team |
@@ -40,8 +42,9 @@ This extension adds a **Favorites** node to Solution Explorer where you can orga
 ### Add Files and Folders
 
 - **From Solution Explorer:** Right-click any file or folder → **Add to Favorites**
-- **From Disk:** Right-click the Favorites node or any folder → **Add File...** to browse for files anywhere on your system
-- When adding a folder, a matching folder structure is created in Favorites with all contained files
+- **From File Explorer extension:** Right-click any file or folder in the File Explorer tree → **Add to Favorites**
+- **From Disk (file):** Right-click the Favorites node or any folder → **Add File...** to browse for a file anywhere on your system
+- **From Disk (folder):** Right-click the Favorites node → **Add Folder from Disk...** to browse for a folder — all files are added recursively, preserving the directory structure
 
 ### Organize with Virtual Folders
 

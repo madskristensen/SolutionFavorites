@@ -26,5 +26,26 @@ namespace SolutionFavorites.Helpers
                 return [];
             }
         }
+
+        /// <summary>
+        /// Opens a folder browser dialog and returns the selected folder path.
+        /// </summary>
+        /// <param name="title">Dialog title.</param>
+        /// <returns>Selected folder path, or null if cancelled.</returns>
+        public static string BrowseForFolder(string title = "Add Folder to Favorites")
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                dialog.Description = title;
+                dialog.ShowNewFolderButton = false;
+
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    return dialog.SelectedPath;
+                }
+
+                return null;
+            }
+        }
     }
 }

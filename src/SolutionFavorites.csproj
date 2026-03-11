@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Commands\AddFileCommand.cs" />
     <Compile Include="Commands\AddFileInFolderCommand.cs" />
+    <Compile Include="Commands\AddFolderFromDiskCommand.cs" />
     <Compile Include="Commands\AddFolderToFavoritesCommand.cs" />
     <Compile Include="Commands\AddToFavoritesCommand.cs" />
     <Compile Include="Commands\CopyFullPathCommand.cs" />
