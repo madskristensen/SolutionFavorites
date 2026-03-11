@@ -57,6 +57,11 @@ namespace SolutionFavorites
         }
 
         /// <summary>
+        /// Creates a standalone instance for unit testing (no singleton, no VS dependencies).
+        /// </summary>
+        internal static FavoritesManager CreateForTesting() => new FavoritesManager();
+
+        /// <summary>
         /// Ensures the solution path is loaded if a solution is open.
         /// </summary>
         private void EnsureSolutionPathLoaded()
@@ -87,7 +92,7 @@ namespace SolutionFavorites
         /// <summary>
         /// Converts an absolute file path to a solution-relative path.
         /// </summary>
-        private string ToRelativePath(string absolutePath)
+        internal string ToRelativePath(string absolutePath)
         {
             if (string.IsNullOrEmpty(_solutionDirectory) || string.IsNullOrEmpty(absolutePath))
                 return absolutePath;
@@ -249,7 +254,7 @@ namespace SolutionFavorites
         /// <summary>
         /// Inserts an item into a list maintaining sorted order (folders first, then by name).
         /// </summary>
-        private static void InsertSorted(List<FavoriteItem> items, FavoriteItem newItem)
+        internal static void InsertSorted(List<FavoriteItem> items, FavoriteItem newItem)
         {
             var insertIndex = 0;
             
@@ -288,7 +293,7 @@ namespace SolutionFavorites
         /// Sorts a list of items in place (folders first, then by name).
         /// Used after loading from disk.
         /// </summary>
-        private static void SortItemsInPlace(List<FavoriteItem> items)
+        internal static void SortItemsInPlace(List<FavoriteItem> items)
         {
             items.Sort((a, b) =>
             {
@@ -453,7 +458,7 @@ namespace SolutionFavorites
         /// <summary>
         /// Checks if potentialDescendant is nested inside ancestor.
         /// </summary>
-        private bool IsDescendantOf(FavoriteItem potentialDescendant, FavoriteItem ancestor)
+        internal bool IsDescendantOf(FavoriteItem potentialDescendant, FavoriteItem ancestor)
         {
             if (ancestor?.Children == null)
                 return false;

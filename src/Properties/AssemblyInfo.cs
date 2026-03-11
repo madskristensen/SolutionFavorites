@@ -1,7 +1,10 @@
-﻿using SolutionFavorites;
+using SolutionFavorites;
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
+[assembly: InternalsVisibleTo("SolutionFavorites.Test")]
 
 [assembly: AssemblyTitle(Vsix.Name)]
 [assembly: AssemblyDescription(Vsix.Description)]
