@@ -497,7 +497,8 @@ namespace SolutionFavorites
 
             RemoveFromTree(_data.Items, item);
             Save();
-            RaiseFavoritesChanged(null); // Full refresh - we don't track parent
+            var affectedFolder = FindParentFolder(item);
+            RaiseFavoritesChanged(affectedFolder);
         }
 
         /// <summary>
@@ -617,6 +618,60 @@ namespace SolutionFavorites
         private void RaiseVisibilityChanged()
         {
             VisibilityChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Checks if there are duplicate filenames in the same folder.
+        /// </summary>
+        public bool HasDuplicateNames(FavoriteItem fileItem)
+        {
+            if (fileItem.IsFolder || string.IsNullOrEmpty(fileItem.Path))
+                return false;
+
+            FavoriteItem folder = FindParentFolder(fileItem);
+            var siblings = folder?.Children ?? _data.Items;
+
+            int count = 0;
+            foreach (var sibling in siblings)
+            {
+                if (!sibling.IsFolder && sibling.Name == fileItem.Name)
+                {
+                    count++;
+                    if (count > 1) return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Finds the parent folder of a given item.
+        /// </summary>
+        private FavoriteItem FindParentFolder(FavoriteItem item)
+        {
+            foreach (var root in _data.Items)
+            {
+                if (root.Children?.Contains(item) == true) return root;
+                var found = FindInChildren(root, item);
+                if (found != null) return found;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Recursively searches for the parent of the target item.
+        /// </summary>
+        private FavoriteItem FindInChildren(FavoriteItem parent, FavoriteItem target)
+        {
+            if (parent.Children?.Contains(target) == true) return parent;
+            foreach (var child in parent.Children ?? new List<FavoriteItem>())
+            {
+                if (child.IsFolder)
+                {
+                    var found = FindInChildren(child, target);
+                    if (found != null) return found;
+                }
+            }
+            return null;
         }
     }
 

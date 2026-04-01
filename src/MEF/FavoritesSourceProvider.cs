@@ -66,7 +66,7 @@ namespace SolutionFavorites.MEF
                     {
                         // Load favorites for this solution
                         FavoritesManager.Instance.LoadForSolution(_dte.Solution.FullName);
-                        
+
                         if (_rootNode == null)
                         {
                             _rootNode = new FavoritesRootNode(hierarchyItem);

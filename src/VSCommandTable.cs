@@ -36,6 +36,7 @@ namespace SolutionFavorites
         public const int AddToFavoritesFolderGroup = 0x0011;
         public const int AddToFavoritesWebItemGroup = 0x0012;
         public const int AddToFavoritesWebFolderGroup = 0x0013;
+        public const int AddToFavoritesDocTabGroup = 0x0014;
         public const int SolutionExplorerToolbarGroup = 0x0020;
         public const int FileEditGroup = 0x0060;
         public const int FileActionsGroup = 0x0070;

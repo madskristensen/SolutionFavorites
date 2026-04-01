@@ -266,15 +266,11 @@ namespace SolutionFavorites.MEF
         /// <param name="parent">The parent node for newly created nodes.</param>
         protected static void SmartRefreshChildren(ObservableCollection<object> children, IReadOnlyList<FavoriteItem> currentItems, object parent)
         {
-            // Build lookup of existing nodes by their FavoriteItem
+            // Build lookup of existing folder nodes by their FavoriteItem (preserve folders)
             var existingNodes = new Dictionary<FavoriteItem, object>();
             foreach (var child in children)
             {
-                if (child is FavoriteFileNode fileNode)
-                {
-                    existingNodes[fileNode.Item] = child;
-                }
-                else if (child is FavoriteFolderNode folderNode)
+                if (child is FavoriteFolderNode folderNode)
                 {
                     existingNodes[folderNode.Item] = child;
                 }
@@ -283,22 +279,24 @@ namespace SolutionFavorites.MEF
             // Build set of current items for quick lookup
             var currentItemSet = new HashSet<FavoriteItem>(currentItems);
 
-            // Remove nodes that are no longer in the data model (iterate backwards to safely remove)
+            // Remove all file nodes and nodes that are no longer in the data model
             for (var i = children.Count - 1; i >= 0; i--)
             {
                 var child = children[i];
                 FavoriteItem childItem = null;
+                bool isFile = false;
 
                 if (child is FavoriteFileNode fileNode)
                 {
                     childItem = fileNode.Item;
+                    isFile = true;
                 }
                 else if (child is FavoriteFolderNode folderNode)
                 {
                     childItem = folderNode.Item;
                 }
 
-                if (childItem != null && !currentItemSet.Contains(childItem))
+                if (isFile || (childItem != null && !currentItemSet.Contains(childItem)))
                 {
                     children.RemoveAt(i);
                     (child as IDisposable)?.Dispose();

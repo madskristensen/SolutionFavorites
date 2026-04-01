@@ -69,7 +69,25 @@ namespace SolutionFavorites.MEF
         public bool FileExists => _fileExists;
 
         // ITreeDisplayItem
-        public override string Text => Item.Name;
+        public override string Text
+        {
+            get
+            {
+                if (FavoritesManager.Instance.HasDuplicateNames(Item) && !string.IsNullOrEmpty(Item.Path))
+                {
+                    string parentDir = Path.GetDirectoryName(Item.Path);
+                    if (!string.IsNullOrEmpty(parentDir))
+                    {
+                        string immediateParent = Path.GetFileName(parentDir);
+                        if (!string.IsNullOrEmpty(immediateParent))
+                        {
+                            return $"{immediateParent}/{Item.Name}";
+                        }
+                    }
+                }
+                return Item.Name;
+            }
+        }
         public override string ToolTipText => AbsoluteFilePath ?? Item.Name;
         public override string StateToolTipText => FileExists ? string.Empty : "File not found";
         System.Windows.FontStyle ITreeDisplayItem.FontStyle => FileExists ? System.Windows.FontStyles.Normal : System.Windows.FontStyles.Italic;
