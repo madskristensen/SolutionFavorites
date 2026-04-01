@@ -6,7 +6,7 @@ namespace SolutionFavorites.Commands
 {
     /// <summary>
     /// Command to add the selected item to favorites.
-    /// Works with both Solution Explorer project items and WorkspaceFiles (File Explorer) nodes.
+    /// Works with document tabs, Solution Explorer project items, and WorkspaceFiles (File Explorer) nodes.
     /// </summary>
     [Command(PackageIds.AddToFavorites)]
     internal sealed class AddToFavoritesCommand : BaseCommand<AddToFavoritesCommand>
@@ -22,24 +22,58 @@ namespace SolutionFavorites.Commands
                 return;
             }
 
+            // Next, try to handle Solution Explorer selection via DTE
             DTE dte = await VS.GetServiceAsync<DTE, DTE>();
-            if (dte?.SelectedItems == null)
+            if (dte?.SelectedItems != null && dte.SelectedItems.Count > 0)
             {
-                return;
-            }
-
-            foreach (SelectedItem selectedItem in dte.SelectedItems)
-            {
-                ProjectItem projectItem = selectedItem.ProjectItem;
-                if (projectItem != null)
+                bool handledAny = false;
+                foreach (SelectedItem selectedItem in dte.SelectedItems)
                 {
-                    var filePath = projectItem.FileNames[1];
-                    if (!string.IsNullOrEmpty(filePath))
+                    ProjectItem projectItem = selectedItem.ProjectItem;
+                    if (projectItem != null)
                     {
-                        _ = FavoritesManager.Instance.AddFile(filePath);
+                        var filePath = projectItem.FileNames[1];
+                        if (!string.IsNullOrEmpty(filePath))
+                        {
+                            _ = FavoritesManager.Instance.AddFile(filePath);
+                            handledAny = true;
+                        }
                     }
                 }
+
+                if (handledAny)
+                {
+                    return;
+                }
             }
+
+            // Finally, try to get the active document (for document tab context menu)
+            // This is used when right-clicking on a document tab where there's no selection
+            await TryHandleActiveDocumentAsync();
+        }
+
+        /// <summary>
+        /// Tries to get the active document and add it to favorites.
+        /// This is used as a fallback when there's no explicit selection (e.g., document tab context menu).
+        /// Returns true if an active document was found and added.
+        /// </summary>
+        private static async System.Threading.Tasks.Task<bool> TryHandleActiveDocumentAsync()
+        {
+            try
+            {
+                var docView = await VS.Documents.GetActiveDocumentViewAsync();
+                if (docView?.FilePath != null && File.Exists(docView.FilePath))
+                {
+                    _ = FavoritesManager.Instance.AddFile(docView.FilePath);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                // If getting active document fails, fall through to other methods
+            }
+
+            return false;
         }
 
         /// <summary>
