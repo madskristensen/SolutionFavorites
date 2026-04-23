@@ -98,6 +98,23 @@ namespace SolutionFavorites.Test.FavoritesManager
         }
 
         [TestMethod]
+        public void LoadForSolution_WithDuplicates_IndexesAllOccurrences()
+        {
+            var solutionPath = CreateSolutionPath();
+            var data = new FavoritesData();
+            data.Items.Add(FavoriteItem.CreateFile(@"src\Program.cs"));
+            data.Items.Add(FavoriteItem.CreateFile(@"src\Program.cs"));
+            WriteFavoritesJson(solutionPath, data);
+
+            var manager = SolutionFavorites.FavoritesManager.CreateForTesting();
+            manager.LoadForSolution(solutionPath);
+
+            var absolutePath = Path.Combine(manager.SolutionDirectory!, @"src\Program.cs");
+            Assert.IsTrue(manager.HasFavorites);
+            Assert.IsTrue(manager.IsFileFavorited(absolutePath));
+        }
+
+        [TestMethod]
         public void LoadForSolution_ValidFile_IsVisibleWhenItemsPresent()
         {
             var solutionPath = CreateSolutionPath();

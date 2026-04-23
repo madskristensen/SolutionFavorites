@@ -108,5 +108,27 @@ namespace SolutionFavorites.Test.FavoritesManager
 
             Assert.IsFalse(manager.IsFileFavorited(absolutePath));
         }
+
+        // --- Duplicates ---
+
+        [TestMethod]
+        public void LoadWithDuplicates_IsAllowedAndIndexed()
+        {
+            var solutionPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName(), "Test.sln");
+            Directory.CreateDirectory(Path.GetDirectoryName(solutionPath)!);
+            var favoritesPath = Path.Combine(Path.GetDirectoryName(solutionPath)!, "favorites.json");
+
+            var data = new FavoritesData();
+            data.Items.Add(FavoriteItem.CreateFile(@"src\Program.cs"));
+            data.Items.Add(FavoriteItem.CreateFile(@"src\Program.cs"));
+            File.WriteAllText(favoritesPath, Newtonsoft.Json.JsonConvert.SerializeObject(data));
+
+            var manager = SolutionFavorites.FavoritesManager.CreateForTesting();
+            manager.LoadForSolution(solutionPath);
+
+            var absolutePath = Path.Combine(manager.SolutionDirectory!, @"src\Program.cs");
+            Assert.IsTrue(manager.HasFavorites);
+            Assert.IsTrue(manager.IsFileFavorited(absolutePath));
+        }
     }
 }

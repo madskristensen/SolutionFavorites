@@ -21,8 +21,8 @@ namespace SolutionFavorites
         private string _currentSolutionPath;
         private string _solutionDirectory;
         
-        // HashSet for O(1) duplicate file path lookups (stores lowercase relative paths)
-        private HashSet<string> _filePathIndex;
+        // Dictionary for O(1) file path lookups (stores lowercase relative paths and their occurrence count)
+        private Dictionary<string, int> _filePathIndex;
 
         /// <summary>
         /// Gets the singleton instance.
@@ -53,7 +53,7 @@ namespace SolutionFavorites
         private FavoritesManager()
         {
             _data = new FavoritesData();
-            _filePathIndex = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            _filePathIndex = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace SolutionFavorites
             _currentSolutionPath = solutionPath;
             _solutionDirectory = Path.GetDirectoryName(solutionPath);
             _data = new FavoritesData();
-            _filePathIndex = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            _filePathIndex = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
             var filePath = GetFavoritesFilePath(solutionPath);
             if (filePath != null && File.Exists(filePath))
@@ -224,7 +224,7 @@ namespace SolutionFavorites
             _currentSolutionPath = null;
             _solutionDirectory = null;
             _data = new FavoritesData();
-            _filePathIndex = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            _filePathIndex = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             RaiseFavoritesChanged();
         }
 
@@ -322,15 +322,9 @@ namespace SolutionFavorites
 
             var relativePath = ToRelativePath(filePath);
 
-            // Check if file already exists anywhere (O(1) lookup)
-            if (FileExistsInTree(relativePath))
-            {
-                return null;
-            }
-
             var item = FavoriteItem.CreateFile(relativePath);
             InsertSorted(_data.Items, item); // Insert in sorted position
-            _filePathIndex.Add(relativePath); // Maintain index
+            IncrementPathIndex(relativePath); // Maintain index
             
             // Auto-show favorites when adding first item
             if (!_isVisible)
@@ -354,15 +348,9 @@ namespace SolutionFavorites
 
             var relativePath = ToRelativePath(filePath);
 
-            // Check if file already exists anywhere (O(1) lookup)
-            if (FileExistsInTree(relativePath))
-            {
-                return null;
-            }
-
             var item = FavoriteItem.CreateFile(relativePath);
             InsertSorted(folder.Children, item); // Insert in sorted position
-            _filePathIndex.Add(relativePath); // Maintain index
+            IncrementPathIndex(relativePath); // Maintain index
             Save();
             RaiseFavoritesChanged(folder); // Specific folder affected
             return item;
@@ -476,6 +464,45 @@ namespace SolutionFavorites
         }
 
         /// <summary>
+        /// Increments the occurrence count of a path in the index.
+        /// </summary>
+        private void IncrementPathIndex(string relativePath)
+        {
+            if (string.IsNullOrEmpty(relativePath))
+                return;
+
+            if (_filePathIndex.TryGetValue(relativePath, out int count))
+            {
+                _filePathIndex[relativePath] = count + 1;
+            }
+            else
+            {
+                _filePathIndex[relativePath] = 1;
+            }
+        }
+
+        /// <summary>
+        /// Decrements the occurrence count of a path in the index.
+        /// </summary>
+        private void DecrementPathIndex(string relativePath)
+        {
+            if (string.IsNullOrEmpty(relativePath))
+                return;
+
+            if (_filePathIndex.TryGetValue(relativePath, out int count))
+            {
+                if (count <= 1)
+                {
+                    _filePathIndex.Remove(relativePath);
+                }
+                else
+                {
+                    _filePathIndex[relativePath] = count - 1;
+                }
+            }
+        }
+
+        /// <summary>
         /// Removes an item from the tree.
         /// </summary>
         public void Remove(FavoriteItem item)
@@ -487,7 +514,7 @@ namespace SolutionFavorites
             // Remove from path index
             if (!item.IsFolder && !string.IsNullOrEmpty(item.Path))
             {
-                _filePathIndex.Remove(item.Path);
+                DecrementPathIndex(item.Path);
             }
             else if (item.IsFolder)
             {
@@ -523,7 +550,7 @@ namespace SolutionFavorites
         /// </summary>
         private bool FileExistsInTree(string relativePath)
         {
-            return _filePathIndex.Contains(relativePath);
+            return _filePathIndex.ContainsKey(relativePath);
         }
 
         /// <summary>
@@ -544,7 +571,7 @@ namespace SolutionFavorites
             {
                 if (!item.IsFolder && !string.IsNullOrEmpty(item.Path))
                 {
-                    _filePathIndex.Add(item.Path);
+                    IncrementPathIndex(item.Path);
                 }
                 else if (item.IsFolder && item.Children != null)
                 {
@@ -565,7 +592,7 @@ namespace SolutionFavorites
             {
                 if (!item.IsFolder && !string.IsNullOrEmpty(item.Path))
                 {
-                    _filePathIndex.Remove(item.Path);
+                    DecrementPathIndex(item.Path);
                 }
                 else if (item.IsFolder && item.Children != null)
                 {
